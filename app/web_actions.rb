@@ -1,5 +1,5 @@
 module WebActions
-  TEMPLATE_PATH = '../../view/'.freeze
+  TEMPLATE_PATH = '../../views/'.freeze
   TEMPLATE_FORMAT = '.html.haml'.freeze
   BASE_TEMPLATE = 'base'.freeze
 

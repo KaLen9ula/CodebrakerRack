@@ -8,6 +8,8 @@ RSpec.describe StatisticsRack do
 
   describe '#statistics' do
     before do
+      stub_const('Codebraker::FileStore::FILE_NAME', 'gamers.yml')
+      stub_const('Codebraker::FileStore::FILE_DIRECTORY', 'spec/fixtures')
       allow(statistic_rack).to receive(:load).and_return([])
     end
 
