@@ -1,5 +1,4 @@
 class WebGame
-  WIN_MATRIX = ['+'] * 4
   GAME_INSTANCE_VARIABLES = %i[@code @user @stage @difficulty @possible_hints].freeze
 
   attr_reader :codebraker_game
@@ -65,10 +64,6 @@ class WebGame
 
   def level
     @codebraker_game.difficulty.to_s.upcase
-  end
-
-  def win?
-    matrix == WIN_MATRIX
   end
 
   private

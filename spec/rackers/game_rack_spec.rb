@@ -2,6 +2,7 @@ RSpec.describe GameRack do
   let(:request) { instance_double('Request') }
   let(:game_rack) { described_class.new(request) }
   let(:game_manager) { WebGame.new(request) }
+  let(:guess) { '1111' }
 
   before do
     allow(request).to receive(:session).and_return({})
@@ -54,6 +55,11 @@ RSpec.describe GameRack do
     end
 
     context 'when codebraker game is not in session' do
+      before do
+        allow(game_manager).to receive_message_chain(:codebraker_game, :win?).and_return(false)
+        allow(request).to receive(:params).and_return({ 'number' => guess })
+      end
+
       it do
         expect(game_rack.win).to be_instance_of Rack::Response
       end
@@ -71,7 +77,7 @@ RSpec.describe GameRack do
       before do
         allow(game_manager).to receive(:current_game?).and_return(true)
         game_manager.codebraker_game.instance_variable_set(:@stage, Codebraker::Settings::WIN)
-        allow(game_manager).to receive(:win?).and_return(false)
+        allow(game_manager).to receive(:win_codition?).and_return(false)
         game_rack.instance_variable_set(:@game_manager, game_manager)
       end
 
@@ -87,7 +93,7 @@ RSpec.describe GameRack do
     context 'when user win' do
       before do
         allow(game_manager).to receive(:current_game?).and_return(true)
-        allow(game_manager).to receive(:win?).and_return(true)
+        allow(game_manager).to receive(:win_codition?).and_return(true)
         game_rack.instance_variable_set(:@game_manager, game_manager)
         game_manager.codebraker_game.instance_variable_set(:@stage, Codebraker::Settings::WIN)
       end

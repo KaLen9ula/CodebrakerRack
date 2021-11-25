@@ -14,7 +14,7 @@ class GameRack < Racker
   end
 
   def win
-    return redirect('/') unless @game_manager.current_game? || @game_manager.win?
+    return redirect('/') unless @game_manager.current_game? || win_codition?
 
     @game_manager.codebraker_game.save_game(@game_manager.codebraker_game)
     response = rack_response('win')
