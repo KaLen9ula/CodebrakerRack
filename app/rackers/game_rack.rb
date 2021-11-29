@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GameRack < Racker
   ROUTES = {
     '/' => :index,
@@ -14,53 +16,60 @@ class GameRack < Racker
   end
 
   def win
-    return redirect('/') unless @game_manager.current_game? || win_codition?
+    response = redirect(I18n.t('pages.index')) unless @game_manager.current_game? || win_codition?
 
-    @game_manager.codebraker_game.save_game(@game_manager.codebraker_game)
-    response = rack_response('win')
-    @request.session.clear
+    if response.nil?
+      @game_manager.codebraker_game.save_game(@game_manager.codebraker_game)
+      response = rack_response(I18n.t('pages.win'))
+      @request.session.clear
+    end
     response
   end
 
   def lose
-    return redirect('/') unless @game_manager.current_game?
+    current_game_to_index_redirect
 
-    response = rack_response('lose')
-    @request.session.clear
-    response
+    if @response.nil?
+      @response = rack_response(I18n.t('pages.lose'))
+      @request.session.clear
+    end
+    @response
   end
 
   def game
-    return redirect('/') unless @game_manager.current_game?
+    current_game_to_index_redirect
 
-    rack_response('game')
+    @response || rack_response(I18n.t('pages.game'))
   end
 
   def hint
-    return redirect('/') unless @game_manager.current_game?
+    current_game_to_index_redirect
 
-    @game_manager.give_hint if @game_manager.codebraker_game.check_for_hints?
-    redirect('game')
+    @game_manager.give_hint if @response.nil? && @game_manager.codebraker_game.check_for_hints?
+
+    @response || redirect(I18n.t('pages.game'))
   end
 
   def guess
-    return redirect('/') unless @game_manager.current_game?
-    return redirect('game') if @request.params['number'].nil?
+    current_game_to_index_redirect || check_number_params_redirect
 
-    @game_manager.configure_game_session
-    return win_redirection if win_codition?
-    return redirect('lose') if @game_manager.codebraker_game.lose?
+    if @response.nil?
+      @game_manager.configure_game_session
+      win_redirection || lose_redirection
+    end
 
-    redirect('game')
+    @response || redirect(I18n.t('pages.game'))
   end
 
   def index
-    return redirect('game') if @game_manager.current_game?
-    return rack_response('menu') if @request.params.empty?
+    response = redirect(I18n.t('pages.game')) if @game_manager.current_game?
+    response = rack_response(I18n.t('pages.menu')) if !response && @request.params.empty?
 
-    @game_manager.configure_codebraker_game
-    @game_manager.clear_session
-    redirect('game')
+    if response.nil?
+      @game_manager.configure_codebraker_game
+      @game_manager.clear_session
+    end
+    response || redirect(I18n.t('pages.game'))
   end
 
   private
@@ -70,7 +79,29 @@ class GameRack < Racker
   end
 
   def win_redirection
+    return unless win_codition?
+
     @game_manager.save_game
-    redirect('win')
+    @response = redirect(I18n.t('pages.win'))
+  end
+
+  def lose_redirection
+    @response = redirect(I18n.t('pages.lose')) if @game_manager.codebraker_game.lose?
+  end
+
+  def current_game_to_index_redirect
+    @response = redirect(I18n.t('pages.index')) unless @game_manager.current_game?
+  end
+
+  def current_game_to_game_redirect
+    @response = redirect(I18n.t('pages.game')) unless @game_manager.current_game?
+  end
+
+  def check_number_params_redirect
+    @response = redirect(I18n.t('pages.game')) if @request.params['number'].nil?
+  end
+
+  def check_params_redirect
+    @response = rack_response(I18n.t('pages.menu')) if @request.params.empty?
   end
 end

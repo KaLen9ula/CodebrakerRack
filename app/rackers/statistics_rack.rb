@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StatisticsRack < Racker
   ROUTES = {
     '/statistics' => :statistics

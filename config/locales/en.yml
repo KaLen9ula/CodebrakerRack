@@ -10,6 +10,12 @@ en:
   code_was: The code was
   win: Congratulations, %{name}! You won the game!
   no_winners: There are no winners yet! Be the first!
+  pages:
+    index: '/'
+    menu: 'menu'
+    game: 'game'
+    win: 'win'
+    lose: 'lose'
   welcome: |
     Hello, %{name}!
     Try to guess 4-digit number, that consists of numbers in a range from 1 to 6.

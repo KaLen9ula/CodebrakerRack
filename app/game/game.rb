@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebGame
   GAME_INSTANCE_VARIABLES = %i[@code @user @stage @difficulty @possible_hints].freeze
 
@@ -70,9 +72,7 @@ class WebGame
 
   def validate_game_attributes?
     game_attributes = @request.session[:codebraker_game]
-    return unless game_attributes.is_a? Hash
-
-    conditions = game_attributes.each_key.map do |instance_variable|
+    conditions = game_attributes.keys.map do |instance_variable|
       GAME_INSTANCE_VARIABLES.include? instance_variable.to_sym
     end
     conditions.all?

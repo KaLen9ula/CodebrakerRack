@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Racker
   include WebActions
   ROUTES = {}.freeze

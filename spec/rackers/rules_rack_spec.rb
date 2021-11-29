@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe RulesRack do
   let(:request) { instance_double('Request') }
   let(:rules_rack) { described_class.new(request) }

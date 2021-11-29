@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe GameRack do
   let(:request) { instance_double('Request') }
   let(:game_rack) { described_class.new(request) }

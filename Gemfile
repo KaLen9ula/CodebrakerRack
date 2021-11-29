@@ -13,7 +13,7 @@ gem 'rake', '~> 13.0'
 group :development do
   gem 'fasterer', '~> 0.8.3'
   gem 'lefthook', '~> 0.7.7'
-  gem 'rubocop', '~> 1.22.1'
+  gem 'rubocop', '~> 1.22.1', require: false
   gem 'rubocop-performance', '~> 1.11.5', require: false
 end
 

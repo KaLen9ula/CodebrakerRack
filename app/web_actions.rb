@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module WebActions
-  TEMPLATE_PATH = '../../views/'.freeze
-  TEMPLATE_FORMAT = '.html.haml'.freeze
-  BASE_TEMPLATE = 'base'.freeze
+  TEMPLATE_PATH = '../../views/'
+  TEMPLATE_FORMAT = '.html.haml'
+  BASE_TEMPLATE = 'base'
 
   def redirect(name)
     Rack::Response.new { |response| response.redirect(name) }

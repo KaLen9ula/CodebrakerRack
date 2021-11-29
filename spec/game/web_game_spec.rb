@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe WebGame do
   let(:request) { instance_double('Request') }
   let(:game_manager) { described_class.new(request) }

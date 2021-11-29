@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe StatisticsRack do
   let(:request) { instance_double('Request') }
   let(:statistic_rack) { described_class.new(request) }
