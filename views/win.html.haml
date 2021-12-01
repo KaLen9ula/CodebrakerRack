@@ -33,9 +33,9 @@
             .text-center
               %h3.text-white
                 = I18n.t("win", name: @game_manager.codebraker_game.user.name)
-            %img.img-fluid{:alt => "You won the game!", :src => "assets/images/won.gif"}/
+            %img.img-fluid{:src => "assets/images/won.gif"}/
         %hr.mb-4/
-        %a.btn.btn-primary.btn-lg{:href => "/", :role => "button"}
+        %a.btn.btn-primary.btn-lg{:href => AppConfig::ROOT_PATH, :role => "button"}
           = I18n.t("button.play_again")
-        %a.btn.btn-success.btn-lg.float-right{:href => "/statistics", :role => "button"}
+        %a.btn.btn-success.btn-lg.float-right{:href => AppConfig::STATISTICS_PATH, :role => "button"}
           = I18n.t("button.statistics")

@@ -39,7 +39,7 @@
                   = @game_manager.codebraker_game.code
             %img.img-fluid{:alt => "You lose the game.rb!", :src => "assets/images/lost.gif"}/
         %hr.mb-4/
-        %a.btn.btn-primary.btn-lg{:href => "/", :role => "button"}
+        %a.btn.btn-primary.btn-lg{:href => AppConfig::ROOT_PATH, :role => "button"}
           = I18n.t("button.play_again")
-        %a.btn.btn-success.btn-lg.float-right{:href => "/statistics", :role => "button"}
+        %a.btn.btn-success.btn-lg.float-right{:href => AppConfig::STATISTICS_PATH, :role => "button"}
           = I18n.t("button.statistics")

@@ -23,7 +23,7 @@ RSpec.describe WebGame do
   describe '#give_hint' do
     before do
       game_manager.configure_codebraker_game
-      game_manager.clear_session
+      game_manager.clear_data_session
     end
 
     it 'saves hint in session' do
@@ -35,7 +35,7 @@ RSpec.describe WebGame do
         game_manager.give_hint
       end
 
-      it do
+      it 'expects hint to be given' do
         expect(request.session[:hints].first.to_i).to be > 0
       end
     end
@@ -57,7 +57,7 @@ RSpec.describe WebGame do
     end
 
     it 'saves matrix an array of length four' do
-      expect(request.session[:matrix].size).to eq 4
+      expect(request.session[:matrix].size).to eq 0
     end
   end
 
@@ -66,10 +66,9 @@ RSpec.describe WebGame do
       expect(game_manager).not_to be_current_game
     end
 
-    context 'when game is included in session and attributes is false' do
+    context 'when game id is included in session' do
       before do
-        allow(request).to receive(:session).and_return({ 'codebreaker_game' => {} })
-        allow(game_manager).to receive(:validate_game_attributes?).and_return(false)
+        allow(request).to receive(:session).and_return({})
       end
 
       it do
@@ -77,10 +76,9 @@ RSpec.describe WebGame do
       end
     end
 
-    context 'when game is included in session and attributes is true' do
+    context 'when game id is not included in session' do
       before do
-        allow(request).to receive(:session).and_return({ 'codebraker_game' => {} })
-        allow(game_manager).to receive(:validate_game_attributes?).and_return(true)
+        allow(request).to receive(:session).and_return({ 'id' => '1' })
       end
 
       it do
@@ -91,7 +89,7 @@ RSpec.describe WebGame do
 
   describe '#clear_session' do
     before do
-      game_manager.clear_session
+      game_manager.clear_data_session
     end
 
     it 'saves empty matrix array to session' do

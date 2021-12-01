@@ -4,18 +4,14 @@ en:
   name: Name
   hints: Hints
   attempts: Attempts
-  attempts_used: Attempts Used
-  hints_used: Hints Used
+  attempts_used: Attempts used
+  hints_used: Hints used
+  attempts_left: Attempts left
+  hints_left: Hints left
   loose: Oops, %{name}! You lose the game!
   code_was: The code was
   win: Congratulations, %{name}! You won the game!
   no_winners: There are no winners yet! Be the first!
-  pages:
-    index: '/'
-    menu: 'menu'
-    game: 'game'
-    win: 'win'
-    lose: 'lose'
   welcome: |
     Hello, %{name}!
     Try to guess 4-digit number, that consists of numbers in a range from 1 to 6.

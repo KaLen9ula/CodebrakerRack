@@ -45,11 +45,7 @@ RSpec.describe App do
       end
 
       it 'redirect to game page' do
-        expect(last_response.location).to eq 'game'
-      end
-
-      it 'save codebreaker attributes in session' do
-        expect(last_request.session[:codebraker_game]).to be_instance_of(Hash)
+        expect(last_response.location).to eq '/game'
       end
 
       it 'save hints in session' do
@@ -63,7 +59,7 @@ RSpec.describe App do
 
     context 'when session is not empty' do
       before do
-        env 'rack.session', { codebraker_game: {} }
+        post '/', player_name: player_name, level: level
         get '/'
       end
 
@@ -72,7 +68,7 @@ RSpec.describe App do
       end
 
       it 'redirect to game page' do
-        expect(last_response.location).to eq 'game'
+        expect(last_response.location).to eq '/game'
       end
     end
   end
@@ -108,7 +104,7 @@ RSpec.describe App do
       end
 
       it 'correct display difficulty' do
-        expect(last_response.body).to include(level.upcase)
+        expect(last_response.body).to include(level.capitalize)
       end
 
       it 'correct display attempts' do
@@ -133,11 +129,11 @@ RSpec.describe App do
       end
 
       it 'redirect to game page' do
-        expect(last_response.location).to eq 'game'
+        expect(last_response.location).to eq '/game'
       end
 
       it 'correct save matrix' do
-        expect(last_request.session[:matrix].length).to eq 4
+        expect(last_request.session[:matrix].length).to eq 1
       end
     end
 
@@ -153,7 +149,7 @@ RSpec.describe App do
       end
 
       it 'correct display difficulty' do
-        expect(last_response.body).to include(level.upcase)
+        expect(last_response.body).to include(level.capitalize)
       end
 
       it 'correct display attempts' do
@@ -203,7 +199,7 @@ RSpec.describe App do
       end
 
       it 'redirect to game page' do
-        expect(last_response.location).to eq 'game'
+        expect(last_response.location).to eq '/game'
       end
 
       it 'increased by one' do
@@ -223,7 +219,7 @@ RSpec.describe App do
       end
 
       it 'correct display difficulty' do
-        expect(last_response.body).to include(level.upcase)
+        expect(last_response.body).to include(level.capitalize)
       end
 
       it 'correct display attempts' do
@@ -258,7 +254,7 @@ RSpec.describe App do
 
     context 'when user guessed' do
       before do
-        post '/submit_answer', number: last_request.session[:codebraker_game][:@code]
+        post '/submit_answer', number: load_session(last_request.session[:id]).code
       end
 
       it 'return 302' do
@@ -266,13 +262,13 @@ RSpec.describe App do
       end
 
       it 'redirect to win page' do
-        expect(last_response.location).to eq 'win'
+        expect(last_response.location).to eq '/win'
       end
     end
 
     context 'when redirect to win page' do
       before do
-        post '/submit_answer', number: last_request.session[:codebraker_game][:@code]
+        post '/submit_answer', number: load_session(last_request.session[:id]).code
         get '/win'
       end
 
@@ -285,7 +281,7 @@ RSpec.describe App do
       end
 
       it 'correct display difficulty' do
-        expect(last_response.body).to include(level.upcase)
+        expect(last_response.body).to include(level.capitalize)
       end
 
       it 'correct display attempts' do
@@ -327,7 +323,7 @@ RSpec.describe App do
     end
 
     it 'redirect to lose page' do
-      expect(last_response.location).to eq 'lose'
+      expect(last_response.location).to eq '/lose'
     end
 
     context 'when redirect to lose page' do
@@ -344,7 +340,7 @@ RSpec.describe App do
       end
 
       it 'correct display difficulty' do
-        expect(last_response.body).to include(level.upcase)
+        expect(last_response.body).to include(level.capitalize)
       end
 
       it 'correct display attempts' do
@@ -388,7 +384,7 @@ RSpec.describe App do
     context 'when user guessed' do
       before do
         post '/', player_name: player_name, level: level
-        post '/submit_answer', number: last_request.session[:codebraker_game][:@code]
+        post '/submit_answer', number: load_session(last_request.session[:id]).code
         get '/win'
         get '/statistics'
       end
@@ -398,7 +394,7 @@ RSpec.describe App do
       end
 
       it 'correct display difficulty' do
-        expect(last_response.body).to include(level.upcase)
+        expect(last_response.body).to include(level.capitalize)
       end
 
       it 'correct display attempts' do

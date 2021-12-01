@@ -34,7 +34,7 @@
                     %td
                       = game[:name]
                     %td
-                      = game[:difficulty].to_s.upcase
+                      = game[:difficulty].to_s.capitalize
                     %td
                       = game[:used_attempts]
                       = '/'
@@ -44,5 +44,5 @@
                       = '/'
                       = game[:available_hints]
         %hr.mb-4/
-        %a.btn.btn-primary.btn-lg{:href => "/", :role => "button"}
+        %a.btn.btn-primary.btn-lg{:href => AppConfig::ROOT_PATH, :role => "button"}
           = I18n.t("button.home")

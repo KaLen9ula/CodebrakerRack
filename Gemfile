@@ -11,7 +11,7 @@ gem 'rack-test', '~> 1.1.0'
 gem 'rake', '~> 13.0'
 
 group :development do
-  gem 'fasterer', '~> 0.8.3'
+  gem 'fasterer', '~> 0.8.3', require: false
   gem 'lefthook', '~> 0.7.7'
   gem 'rubocop', '~> 1.22.1', require: false
   gem 'rubocop-performance', '~> 1.11.5', require: false

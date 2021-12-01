@@ -280,7 +280,7 @@ RSpec.describe GameRack do
       end
 
       it do
-        expect(game_rack.index.location).to eq 'game'
+        expect(game_rack.index.location).to eq '/game'
       end
 
       it do

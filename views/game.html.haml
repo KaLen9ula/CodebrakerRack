@@ -29,7 +29,7 @@
               %span.badge.badge-light
                 = @game_manager.codebraker_game.user.hints
         %hr.mb-4/
-        %form{:action => "/submit_answer", :method => "post"}
+        %form{:action => AppConfig::GUESS_PATH, :method => "post"}
           .form-group
             %input.form-control.guess_input{:autocomplete => "off", :name => "number", :pattern => "^[1-6]{4}$", :placeholder => "1234", :required => ""}/
           .form-group.guess_markers_list
@@ -47,7 +47,7 @@
           %hr.mb-4/
           %button.btn.btn-primary.btn-lg{:type => "submit"}
             = I18n.t("button.submit")
-          %a.btn.btn-warning.btn-lg.float-right{:href => "/hint", :role => "button"}
+          %a.btn.btn-warning.btn-lg.float-right{:href => AppConfig::HINT_PATH, :role => "button"}
             = I18n.t("button.hint")
             - @game_manager.hints.each do |hint|
               %span.badge.badge-light

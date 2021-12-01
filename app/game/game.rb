@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
+require_relative '../services/session_saver'
+
 class WebGame
-  GAME_INSTANCE_VARIABLES = %i[@code @user @stage @difficulty @possible_hints].freeze
+  include SessionSaver
 
   attr_reader :codebraker_game
 
   def initialize(request)
     @request = request
-    @codebraker_game = Codebraker::Game.new
-    configure_game
+    @codebraker_game = load_session(@request.session[:id]) || Codebraker::Game.new
   end
 
   def give_hint
@@ -25,14 +26,8 @@ class WebGame
 
   def configure_game_session
     matrix = @codebraker_game.generate_signs(@request.params['number']).chars
-    matrix = ['', '', '', ''].each_with_index.map { |char, index| matrix[index] || char }
     @request.session[:matrix] = matrix
     save_game
-  end
-
-  def clear_session
-    @request.session[:matrix] = []
-    @request.session[:hints] = []
   end
 
   def matrix
@@ -40,20 +35,17 @@ class WebGame
   end
 
   def current_game?
-    @request.session.include?('codebraker_game') && validate_game_attributes?
-  end
-
-  def configure_game
-    attributes = @request.session[:codebraker_game]
-    attributes&.each { |key, value| @codebraker_game.instance_variable_set(key, value) }
+    @request.session.include?('id')
   end
 
   def save_game
-    attributes = {}
-    @codebraker_game.instance_variables.each do |instance_variable|
-      attributes[instance_variable] = @codebraker_game.instance_variable_get(instance_variable)
-    end
-    @request.session[:codebraker_game] = attributes
+    session_id = save_session(@codebraker_game)
+    @request.session[:id] = session_id
+  end
+
+  def clear_data_session
+    @request.session[:matrix] = []
+    @request.session[:hints] = []
   end
 
   def hints
@@ -65,16 +57,6 @@ class WebGame
   end
 
   def level
-    @codebraker_game.difficulty.to_s.upcase
-  end
-
-  private
-
-  def validate_game_attributes?
-    game_attributes = @request.session[:codebraker_game]
-    conditions = game_attributes.keys.map do |instance_variable|
-      GAME_INSTANCE_VARIABLES.include? instance_variable.to_sym
-    end
-    conditions.all?
+    @codebraker_game.difficulty.to_s.capitalize
   end
 end
