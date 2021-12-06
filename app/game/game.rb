@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../services/session_saver'
-
 class WebGame
   include SessionSaver
 
@@ -34,7 +32,7 @@ class WebGame
     @request.session[:matrix]
   end
 
-  def current_game?
+  def game_exists?
     @request.session.include?('id')
   end
 
@@ -43,20 +41,12 @@ class WebGame
     @request.session[:id] = session_id
   end
 
-  def clear_data_session
+  def clear_game_data_session
     @request.session[:matrix] = []
     @request.session[:hints] = []
   end
 
   def hints
     @request.session[:hints]
-  end
-
-  def total_amount(field)
-    Codebraker::Game::DIFFICULTIES[@codebraker_game.difficulty][field]
-  end
-
-  def level
-    @codebraker_game.difficulty.to_s.capitalize
   end
 end

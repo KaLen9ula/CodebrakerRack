@@ -15,12 +15,8 @@ RSpec.describe StatisticsRack do
       allow(statistic_rack).to receive(:load).and_return([])
     end
 
-    it do
-      expect(statistic_rack.statistics).to be_instance_of Rack::Response
-    end
+    it { expect(statistic_rack.statistics).to be_instance_of Rack::Response }
 
-    it do
-      expect(statistic_rack.statistics.status).to eq 200
-    end
+    it { expect(statistic_rack.statistics.status).to eq 200 }
   end
 end

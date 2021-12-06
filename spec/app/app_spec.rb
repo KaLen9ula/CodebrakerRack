@@ -183,7 +183,7 @@ RSpec.describe App do
         post '/', player_name: player_name, level: level
       end
 
-      it 'empty' do
+      it 'expect game to be empty' do
         expect(last_request.session[:hints]).to be_empty
       end
     end

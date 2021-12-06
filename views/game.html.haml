@@ -15,7 +15,7 @@
               = I18n.t("level")
               = ':'
               %span.badge.badge-light
-                = -@game_manager.level
+                = -level(@game_manager.codebraker_game)
           .col.text-center.button
             %button.btn.btn-primary{:disabled => !@game_manager.codebraker_game.check_for_attempts?, :type => "button", :id=> "attempts"}
               = I18n.t("attempts")

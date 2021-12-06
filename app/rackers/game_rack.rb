@@ -7,9 +7,7 @@ class GameRack < Racker
   end
 
   def win
-    @response = redirect(ROOT_PATH) unless @game_manager.current_game? || win_codition?
-
-    return @response if @response
+    return redirect(ROOT_PATH) unless @game_manager.game_exists? || win_codition?
 
     @game_manager.codebraker_game.save_game(@game_manager.codebraker_game)
     @response = rack_response(WIN_PATH)
@@ -18,9 +16,7 @@ class GameRack < Racker
   end
 
   def lose
-    current_game_to_index_redirect
-
-    return @response if @response
+    return redirect(ROOT_PATH) unless @game_manager.game_exists?
 
     @response = rack_response(LOSE_PATH)
     @request.session.clear
@@ -52,12 +48,12 @@ class GameRack < Racker
   end
 
   def index
-    @response = redirect(GAME_PATH) if @game_manager.current_game?
+    @response = redirect(GAME_PATH) if @game_manager.game_exists?
     @response = rack_response('menu') if !@response && @request.params.empty?
 
     unless @response
       @game_manager.configure_codebraker_game
-      @game_manager.clear_data_session
+      @game_manager.clear_game_data_session
     end
     @response || redirect(GAME_PATH)
   end
@@ -80,11 +76,11 @@ class GameRack < Racker
   end
 
   def current_game_to_index_redirect
-    @response = redirect(ROOT_PATH) unless @game_manager.current_game?
+    @response = redirect(ROOT_PATH) unless @game_manager.game_exists?
   end
 
   def current_game_to_game_redirect
-    @response = redirect(GAME_PATH) unless @game_manager.current_game?
+    @response = redirect(GAME_PATH) unless @game_manager.game_exists?
   end
 
   def check_number_params_redirect

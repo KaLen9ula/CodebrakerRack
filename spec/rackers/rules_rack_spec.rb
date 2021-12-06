@@ -9,12 +9,8 @@ RSpec.describe RulesRack do
   end
 
   describe '#rules' do
-    it do
-      expect(rules_rack.rules).to be_instance_of Rack::Response
-    end
+    it { expect(rules_rack.rules).to be_instance_of Rack::Response }
 
-    it do
-      expect(rules_rack.rules.status).to eq 200
-    end
+    it { expect(rules_rack.rules.status).to eq 200 }
   end
 end

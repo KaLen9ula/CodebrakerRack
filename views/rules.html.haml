@@ -9,7 +9,9 @@
         %hr.mb-4/
         .row
           %p.lead.text-white-70
-            = I18n.t("rules")
+            = I18n.t("rules", code_range_first: Codebraker::CODE_RANGE.first,
+                              code_range_last: Codebraker::CODE_RANGE.last,
+                              code_length: Codebraker::CODE_LENGTH)
         %hr.mb-4/
         .row.mb-4
           %a.btn.btn-primary.btn-lg{:href => AppConfig::ROOT_PATH, :role => "button"}

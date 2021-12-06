@@ -12,21 +12,21 @@
               = I18n.t("level")
               = ':'
               %span.badge.badge-light
-                = @game_manager.level
+                = level(@game_manager.codebraker_game)
             %button.btn.btn-primary{:disabled => "disabled", :type => "button"}
               = I18n.t("attempts_left")
               = ':'
               %span.badge.badge-light
                 = @game_manager.codebraker_game.user.attempts
                 = '/'
-                = @game_manager.total_amount(:attempts)
+                = total_amount(@game_manager.codebraker_game, :attempts)
             %button.btn.btn-primary{:disabled => "disabled", :type => "button"}
               = I18n.t("hints_left")
               = ':'
               %span.badge.badge-light
                 = @game_manager.codebraker_game.user.hints
                 = '/'
-                = @game_manager.total_amount(:hints)
+                = total_amount(@game_manager.codebraker_game, :hints)
         %hr.mb-4/
         .row
           .text-center
