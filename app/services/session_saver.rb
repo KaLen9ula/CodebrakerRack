@@ -16,16 +16,14 @@ module SessionSaver
 
   def load_session(session_id)
     create_storage unless storage_exists?
-    (YAML.load_file(storage_path) || { })[session_id]
+    (YAML.load_file(storage_path) || {})[session_id]
   end
 
   private
 
   def create_storage
     Dir.mkdir(STORAGE_DIRECTORY) unless Dir.exist?(STORAGE_DIRECTORY)
-    unless File.exist?(storage_path)
-      File.open(storage_path, 'w+') {}
-    end
+    File.open(storage_path, 'w+') unless File.exist?(storage_path)
     YAML.load_file(storage_path)
   end
 

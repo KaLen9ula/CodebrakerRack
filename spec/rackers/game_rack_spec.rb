@@ -23,7 +23,7 @@ RSpec.describe GameRack do
   describe '#lose' do
     context 'when codebreaker game is not in session' do
       it { expect(game_rack.lose).to be_instance_of Rack::Response }
-      
+
       it { expect(game_rack.lose.location).to eq AppConfig::ROOT_PATH }
 
       it { expect(game_rack.lose.status).to eq 302 }

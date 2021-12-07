@@ -43,7 +43,7 @@ RSpec.describe App do
       it 'return 302' do
         expect(last_response.status).to eq 302
       end
-      
+
       it 'redirect to game page' do
         expect(last_response.location).to eq AppConfig::GAME_PATH
       end
@@ -123,7 +123,7 @@ RSpec.describe App do
         post AppConfig::ROOT_PATH, player_name: player_name, level: level
         post AppConfig::GUESS_PATH, number: '1111'
       end
-      
+
       it 'return 302' do
         expect(last_response.status).to eq 302
       end
@@ -190,7 +190,7 @@ RSpec.describe App do
 
     context 'when take hint' do
       before do
-        post AppConfig::ROOT_PATH, player_name: player_name, level: level 
+        post AppConfig::ROOT_PATH, player_name: player_name, level: level
         post AppConfig::HINT_PATH
       end
 
