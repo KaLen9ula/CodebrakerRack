@@ -17,7 +17,7 @@ RSpec.describe App do
   describe '#index' do
     context 'when form is empty' do
       before do
-        get '/'
+        get AppConfig::ROOT_PATH
       end
 
       it 'return 200' do
@@ -37,15 +37,15 @@ RSpec.describe App do
 
     context 'when form is filled' do
       before do
-        post '/', player_name: player_name, level: level
+        post AppConfig::ROOT_PATH, player_name: player_name, level: level
       end
 
       it 'return 302' do
         expect(last_response.status).to eq 302
       end
-
+      
       it 'redirect to game page' do
-        expect(last_response.location).to eq '/game'
+        expect(last_response.location).to eq AppConfig::GAME_PATH
       end
 
       it 'save hints in session' do
@@ -59,8 +59,8 @@ RSpec.describe App do
 
     context 'when session is not empty' do
       before do
-        post '/', player_name: player_name, level: level
-        get '/'
+        post AppConfig::ROOT_PATH, player_name: player_name, level: level
+        get AppConfig::ROOT_PATH
       end
 
       it 'return 302' do
@@ -68,7 +68,7 @@ RSpec.describe App do
       end
 
       it 'redirect to game page' do
-        expect(last_response.location).to eq '/game'
+        expect(last_response.location).to eq AppConfig::GAME_PATH
       end
     end
   end
@@ -77,7 +77,7 @@ RSpec.describe App do
     context 'when session is empty' do
       before do
         clear_cookies
-        get '/game'
+        get AppConfig::GAME_PATH
       end
 
       it 'return 302' do
@@ -85,14 +85,14 @@ RSpec.describe App do
       end
 
       it 'redirect to menu page' do
-        expect(last_response.location).to eq '/'
+        expect(last_response.location).to eq AppConfig::ROOT_PATH
       end
     end
 
     context 'when correct start' do
       before do
-        post '/', player_name: player_name, level: level
-        get '/game'
+        post AppConfig::ROOT_PATH, player_name: player_name, level: level
+        get AppConfig::GAME_PATH
       end
 
       it 'return 200' do
@@ -120,16 +120,16 @@ RSpec.describe App do
   describe '#submit_answer' do
     context 'when correct submit' do
       before do
-        post '/', player_name: player_name, level: level
-        post '/submit_answer', number: '1111'
+        post AppConfig::ROOT_PATH, player_name: player_name, level: level
+        post AppConfig::GUESS_PATH, number: '1111'
       end
-
+      
       it 'return 302' do
         expect(last_response.status).to eq 302
       end
 
       it 'redirect to game page' do
-        expect(last_response.location).to eq '/game'
+        expect(last_response.location).to eq AppConfig::GAME_PATH
       end
 
       it 'correct save matrix' do
@@ -139,9 +139,9 @@ RSpec.describe App do
 
     context 'when move to game page' do
       before do
-        post '/', player_name: player_name, level: level
-        post '/submit_answer', number: '1111'
-        get '/game'
+        post AppConfig::ROOT_PATH, player_name: player_name, level: level
+        post AppConfig::GUESS_PATH, number: '1111'
+        get AppConfig::GAME_PATH
       end
 
       it 'correct display player name' do
@@ -164,7 +164,7 @@ RSpec.describe App do
     context 'when session is empty' do
       before do
         clear_cookies
-        post '/submit_answer', number: '1111'
+        post AppConfig::GUESS_PATH, number: '1111'
       end
 
       it 'return 302' do
@@ -172,7 +172,7 @@ RSpec.describe App do
       end
 
       it 'redirect to menu page' do
-        expect(last_response.location).to eq '/'
+        expect(last_response.location).to eq AppConfig::ROOT_PATH
       end
     end
   end
@@ -180,7 +180,7 @@ RSpec.describe App do
   describe '#hint' do
     context 'when game is start' do
       before do
-        post '/', player_name: player_name, level: level
+        post AppConfig::ROOT_PATH, player_name: player_name, level: level
       end
 
       it 'expect game to be empty' do
@@ -190,8 +190,8 @@ RSpec.describe App do
 
     context 'when take hint' do
       before do
-        post '/', player_name: player_name, level: level
-        post '/hint'
+        post AppConfig::ROOT_PATH, player_name: player_name, level: level 
+        post AppConfig::HINT_PATH
       end
 
       it 'return 302' do
@@ -199,7 +199,7 @@ RSpec.describe App do
       end
 
       it 'redirect to game page' do
-        expect(last_response.location).to eq '/game'
+        expect(last_response.location).to eq AppConfig::GAME_PATH
       end
 
       it 'increased by one' do
@@ -209,9 +209,9 @@ RSpec.describe App do
 
     context 'when move to game page' do
       before do
-        post '/', player_name: player_name, level: level
-        post '/hint'
-        get '/game'
+        post AppConfig::ROOT_PATH, player_name: player_name, level: level
+        post AppConfig::HINT_PATH
+        get AppConfig::GAME_PATH
       end
 
       it 'correct display player name' do
@@ -234,7 +234,7 @@ RSpec.describe App do
     context 'when session is empty' do
       before do
         clear_cookies
-        get '/hint'
+        get AppConfig::HINT_PATH
       end
 
       it 'return 302' do
@@ -242,19 +242,19 @@ RSpec.describe App do
       end
 
       it 'redirect to menu page' do
-        expect(last_response.location).to eq '/'
+        expect(last_response.location).to eq AppConfig::ROOT_PATH
       end
     end
   end
 
   describe '#win' do
     before do
-      post '/', player_name: player_name, level: level
+      post AppConfig::ROOT_PATH, player_name: player_name, level: level
     end
 
     context 'when user guessed' do
       before do
-        post '/submit_answer', number: load_session(last_request.session[:id]).code
+        post AppConfig::GUESS_PATH, number: load_session(last_request.session[:id]).code
       end
 
       it 'return 302' do
@@ -262,14 +262,14 @@ RSpec.describe App do
       end
 
       it 'redirect to win page' do
-        expect(last_response.location).to eq '/win'
+        expect(last_response.location).to eq AppConfig::WIN_PATH
       end
     end
 
     context 'when redirect to win page' do
       before do
-        post '/submit_answer', number: load_session(last_request.session[:id]).code
-        get '/win'
+        post AppConfig::GUESS_PATH, number: load_session(last_request.session[:id]).code
+        get AppConfig::WIN_PATH
       end
 
       it 'clear session' do
@@ -298,7 +298,7 @@ RSpec.describe App do
     context 'when session is empty' do
       before do
         clear_cookies
-        get '/win'
+        get AppConfig::WIN_PATH
       end
 
       it 'return 302' do
@@ -306,7 +306,7 @@ RSpec.describe App do
       end
 
       it 'redirect to menu page' do
-        expect(last_response.location).to eq '/'
+        expect(last_response.location).to eq AppConfig::ROOT_PATH
       end
     end
   end
@@ -314,8 +314,8 @@ RSpec.describe App do
   describe '#lose' do
     before do
       stub_const('Codebraker::Game::DIFFICULTIES', { level.to_sym => { attempts: 1, hints: 1 } })
-      post '/', player_name: player_name, level: level
-      post '/submit_answer', number: '1112'
+      post AppConfig::ROOT_PATH, player_name: player_name, level: level
+      post AppConfig::GUESS_PATH, number: '1112'
     end
 
     it 'return 302' do
@@ -323,12 +323,12 @@ RSpec.describe App do
     end
 
     it 'redirect to lose page' do
-      expect(last_response.location).to eq '/lose'
+      expect(last_response.location).to eq AppConfig::LOSE_PATH
     end
 
     context 'when redirect to lose page' do
       before do
-        get '/lose'
+        get AppConfig::LOSE_PATH
       end
 
       it 'clear session' do
@@ -357,7 +357,7 @@ RSpec.describe App do
     context 'when session is empty' do
       before do
         clear_cookies
-        get '/lose'
+        get AppConfig::LOSE_PATH
       end
 
       it 'return 302' do
@@ -365,7 +365,7 @@ RSpec.describe App do
       end
 
       it 'redirect to menu page' do
-        expect(last_response.location).to eq '/'
+        expect(last_response.location).to eq AppConfig::ROOT_PATH
       end
     end
   end
@@ -373,7 +373,7 @@ RSpec.describe App do
   describe '#statistics' do
     context 'when move to statistics page' do
       before do
-        get '/statistics'
+        get AppConfig::STATISTICS_PATH
       end
 
       it 'return 200' do
@@ -383,10 +383,10 @@ RSpec.describe App do
 
     context 'when user guessed' do
       before do
-        post '/', player_name: player_name, level: level
-        post '/submit_answer', number: load_session(last_request.session[:id]).code
-        get '/win'
-        get '/statistics'
+        post AppConfig::ROOT_PATH, player_name: player_name, level: level
+        post AppConfig::GUESS_PATH, number: load_session(last_request.session[:id]).code
+        get AppConfig::WIN_PATH
+        get AppConfig::STATISTICS_PATH
       end
 
       it 'correct display player name' do
@@ -411,7 +411,7 @@ RSpec.describe App do
 
   describe '#rules' do
     before do
-      get '/rules'
+      get AppConfig::RULES_PATH
     end
 
     it 'return 200' do
@@ -425,7 +425,7 @@ RSpec.describe App do
     end
 
     it 'redirect to menu page' do
-      expect(last_response.location).to eq '/'
+      expect(last_response.location).to eq AppConfig::ROOT_PATH
     end
   end
 end

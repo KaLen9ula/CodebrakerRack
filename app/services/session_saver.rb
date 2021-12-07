@@ -3,9 +3,9 @@
 module SessionSaver
   STORAGE_PATH = 'id.yml'
   STORAGE_DIRECTORY = 'app/services/session_id'
+  ID_CHARS = ('a'..'z').freeze
 
   def save_session(codebraker_game)
-    create_storage unless storage_exists?
     store = YAML::Store.new(storage_path)
     session_id = generate_session_id
     store.transaction do
@@ -15,7 +15,8 @@ module SessionSaver
   end
 
   def load_session(session_id)
-    YAML.load_file(storage_path)[session_id]
+    create_storage unless storage_exists?
+    (YAML.load_file(storage_path) || { })[session_id]
   end
 
   private
@@ -23,10 +24,7 @@ module SessionSaver
   def create_storage
     Dir.mkdir(STORAGE_DIRECTORY) unless Dir.exist?(STORAGE_DIRECTORY)
     unless File.exist?(storage_path)
-      new_file = YAML::Store.new(storage_path)
-      new_file.transaction do
-        new_file[session_id] = []
-      end
+      File.open(storage_path, 'w+') {}
     end
     YAML.load_file(storage_path)
   end
@@ -40,6 +38,6 @@ module SessionSaver
   end
 
   def generate_session_id
-    Array.new(6).map { ('a'..'z').to_a }.join
+    Array.new(6).map { ID_CHARS.to_a }.join
   end
 end

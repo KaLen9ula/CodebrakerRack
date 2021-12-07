@@ -23,8 +23,8 @@ RSpec.describe GameRack do
   describe '#lose' do
     context 'when codebreaker game is not in session' do
       it { expect(game_rack.lose).to be_instance_of Rack::Response }
-
-      it { expect(game_rack.lose.location).to eq '/' }
+      
+      it { expect(game_rack.lose.location).to eq AppConfig::ROOT_PATH }
 
       it { expect(game_rack.lose.status).to eq 302 }
     end
@@ -54,7 +54,7 @@ RSpec.describe GameRack do
 
       it { expect(game_rack.win).to be_instance_of Rack::Response }
 
-      it { expect(game_rack.win.location).to eq '/' }
+      it { expect(game_rack.win.location).to eq AppConfig::ROOT_PATH }
 
       it { expect(game_rack.win.status).to eq 302 }
     end
@@ -90,7 +90,7 @@ RSpec.describe GameRack do
     context 'when codebreaker game is not in session' do
       it { expect(game_rack.game).to be_instance_of Rack::Response }
 
-      it { expect(game_rack.game.location).to eq '/' }
+      it { expect(game_rack.game.location).to eq AppConfig::ROOT_PATH }
 
       it { expect(game_rack.game.status).to eq 302 }
     end
@@ -113,7 +113,7 @@ RSpec.describe GameRack do
     context 'when codebreaker game is not in session' do
       it { expect(game_rack.hint).to be_instance_of Rack::Response }
 
-      it { expect(game_rack.hint.location).to eq '/' }
+      it { expect(game_rack.hint.location).to eq AppConfig::ROOT_PATH }
 
       it { expect(game_rack.hint.status).to eq 302 }
     end
@@ -137,7 +137,7 @@ RSpec.describe GameRack do
     context 'when codebreaker game is not in session' do
       it { expect(game_rack.guess).to be_instance_of Rack::Response }
 
-      it { expect(game_rack.guess.location).to eq '/' }
+      it { expect(game_rack.guess.location).to eq AppConfig::ROOT_PATH }
 
       it { expect(game_rack.guess.status).to eq 302 }
     end
@@ -211,7 +211,7 @@ RSpec.describe GameRack do
 
       it { expect(game_rack.index).to be_instance_of Rack::Response }
 
-      it { expect(game_rack.index.location).to eq '/game' }
+      it { expect(game_rack.index.location).to eq AppConfig::GAME_PATH }
 
       it { expect(game_rack.index.status).to eq 302 }
     end
