@@ -1,0 +1,18 @@
+%section#introduction
+  .container
+    .row.fill-viewport.align-items-center.justify-content-center
+      .col-12.col-md-6
+        .row
+          .col-md-auto
+            %h1.text-white.title
+              = I18n.t("title")
+        %hr.mb-4/
+        .row
+          %p.lead.text-white-70
+            = I18n.t("rules", code_range_first: Codebraker::CODE_RANGE.first,
+                              code_range_last: Codebraker::CODE_RANGE.last,
+                              code_length: Codebraker::CODE_LENGTH)
+        %hr.mb-4/
+        .row.mb-4
+          %a.btn.btn-primary.btn-lg{:href => AppConfig::ROOT_PATH, :role => "button"}
+            = I18n.t("button.home")

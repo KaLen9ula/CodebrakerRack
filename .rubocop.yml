@@ -1,0 +1,20 @@
+require: 
+  - rubocop-performance
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+
+Style/Documentation:
+  Enabled: false
+
+RSpec/MessageChain:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'Gemfile'
+    - 'spec/**/*.rb'
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false

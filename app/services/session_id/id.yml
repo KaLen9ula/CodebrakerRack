@@ -1,0 +1,19 @@
+---
+? abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz
+: !ruby/object:Codebraker::Game
+  code: ''
+  user: !ruby/object:Codebraker::User
+    name: ''
+    attempts: 0
+    hints: 0
+  stage: :start
+  difficulty:
+    :easy:
+      :attempts: 15
+      :hints: 2
+    :medium:
+      :attempts: 10
+      :hints: 1
+    :hell:
+      :attempts: 5
+      :hints: 1
