@@ -16,7 +16,7 @@ class GameRack < Racker
   end
 
   def lose
-    return redirect(ROOT_PATH) unless @game_manager.game_exists?
+    return redirect(ROOT_PATH) unless @game_manager.game_exists? && lose_condition?
 
     @response = rack_response(LOSE_PATH)
     @request.session.clear
@@ -64,6 +64,10 @@ class GameRack < Racker
     @game_manager.codebraker_game.win?(@request.params['number'])
   end
 
+  def lose_condition?
+    @game_manager.codebraker_game.lose?
+  end
+
   def win_redirection
     return unless win_codition?
 
@@ -72,7 +76,9 @@ class GameRack < Racker
   end
 
   def lose_redirection
-    @response = redirect(LOSE_PATH) if @game_manager.codebraker_game.lose?
+    return unless lose_condition?
+
+    @response = redirect(LOSE_PATH)
   end
 
   def current_game_to_index_redirect
